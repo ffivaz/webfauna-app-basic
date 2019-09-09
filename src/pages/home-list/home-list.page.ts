@@ -14,7 +14,6 @@ import {Network} from "@ionic-native/network";
 import {ConnectPage} from "../connect/connect.page";
 import {TranslateService} from "@ngx-translate/core";
 import {FirstInsertMapPage} from "../first-insert-map/first-insert-map.page";
-import {DeteGroupsListPage} from "../determination/groups-list/groups-list.page";
 import {FirstSpeciesListPage} from "../first-species-list/first-species-list.page";
 import {Storage} from "@ionic/storage";
 import {HTTP} from "@ionic-native/http";
@@ -267,10 +266,6 @@ export class HomeListPage implements OnInit {
                     this.nc.setRoot(FirstInsertMapPage)
                 }
             });
-    }
-
-    toDetermination() {
-        this.nc.setRoot(DeteGroupsListPage);
     }
 
     archiveSentData() {

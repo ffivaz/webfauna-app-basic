@@ -7,14 +7,6 @@ import {SimpleObservationModel} from "../../models/simple-observation.model";
 import {HomeListPage} from "../home-list/home-list.page";
 import {Network} from "@ionic-native/network";
 import {TranslateService} from "@ngx-translate/core";
-import {
-    GoogleMap,
-    GoogleMapOptions,
-    GoogleMaps,
-    GoogleMapsEvent,
-    GoogleMapsMapTypeId,
-    LatLng
-} from "@ionic-native/google-maps";
 import {Storage} from "@ionic/storage";
 
 @Component({

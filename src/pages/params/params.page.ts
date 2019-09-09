@@ -7,8 +7,6 @@ import {AuthService} from "../../services/auth.service";
 import {Network} from "@ionic-native/network";
 import {GroupService} from "../../services/group.service";
 import {ParamsGroupsPage} from "../params-groups/params-groups.page";
-import {ParamsDeteGroupsPage} from "../params-dete-groups/params-dete-groups.page";
-import {DeterminationService} from "../../services/determination.service";
 
 @Component({
     selector: 'page-params',
@@ -28,7 +26,6 @@ export class ParamsPage implements OnInit {
         public as: AuthService,
         public n: Network,
         public gs: GroupService,
-        public ds: DeterminationService,
         public s: Storage
     ) {
     }
@@ -48,9 +45,6 @@ export class ParamsPage implements OnInit {
 
     toGroupSelectPage() {
         this.nc.push(ParamsGroupsPage);
-    }
-    toDeteGroupSelectPage() {
-        this.nc.push(ParamsDeteGroupsPage);
     }
 
     ngOnInit() {

@@ -4,12 +4,10 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 import {HomeListPage} from "../pages/home-list/home-list.page";
 import {ParamsPage} from "../pages/params/params.page";
-import {DeteGroupsListPage} from "../pages/determination/groups-list/groups-list.page";
 import {TranslateService} from "@ngx-translate/core";
 import {Storage} from "@ionic/storage";
 import {ObservationsService} from "../services/observations.service";
 import {AuthService} from "../services/auth.service";
-import {ListesGroupesPage} from "../pages/listes/listes-groupes/listes-groupes.page";
 import {ConnectPage} from "../pages/connect/connect.page";
 import {FirstInsertMapPage} from "../pages/first-insert-map/first-insert-map.page";
 import {AboutPage} from "../pages/about/about.page";
@@ -117,8 +115,6 @@ export class MyApp {
                     this.pages = [
                         {title: 'INSERTION', component: whichInsertPage},
                         {title: 'VOSDONNEES', component: HomeListPage},
-                        {title: 'DETERMINATION_TITLE', component: DeteGroupsListPage},
-                        {title: 'LISTES', component: ListesGroupesPage},
                         {title: 'PARAMETRES', component: ParamsPage},
                         {title: 'CONNECT', component: ConnectPage},
                         {title: 'ABOUT', component: AboutPage}
