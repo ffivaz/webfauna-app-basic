@@ -1,3 +1,5 @@
+# Cet code python extrait les fichiers json de l'API webfauna pour créer des copies locales utilisées dans les différentes page de l'app
+
 import urllib2
 import json
 import ssl
