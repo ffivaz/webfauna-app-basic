@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{ 'GROUP_LIST' | translate }}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="backToHome()">{{ 'ACCUEIL' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <h4 *ngIf="groups && groups.length > 0" padding>
+        {{ 'GROUP_CHOOSE' | translate }}
+    </h4>
+    <p padding>{{ 'TEXT_SPECIES_PORTRAIT' | translate }}</p>
+    <ion-list *ngIf="groups && groups.length > 0">
+        <button *ngFor="let group of groups" ion-item (click)="select(group)">
+            <img [src]="returnImagePath(group)" class="small-logo"><span class="text-along-image">&nbsp;&nbsp;&nbsp;{{ returnNameWithLang(group) }}</span>
+        </button>
+    </ion-list>
+    <div *ngIf="!groups || groups.length == 0" padding class="centered">
+        <h4 class="centered"></h4>
+        <p class="grey">{{ 'NO_LOCAL_DETE_GROUPS' | translate }}</p>
+        <h4 class="centered"></h4>
+        <button ion-button (click)="toDeteGroups()">{{ 'AJOUTER' | translate }}</button>
+    </div>
+</ion-content>

@@ -1,0 +1,14 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-title>{{ 'WHATSNEW' | translate }}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">{{ 'FERMER' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content data-tap-disabled="true">
+    <div padding><b>{{title}}</b></div>
+    <div padding *ngIf="htmlContent" [innerHTML]="htmlContent"></div>
+</ion-content>
+

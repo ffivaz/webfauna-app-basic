@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{ 'ABOUT' | translate }}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="backToHome()">
+                {{ 'RETOUR' | translate }}
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <p padding class="centered">
+        <img src="assets/img/logo_infofauna.png">
+    </p>
+    <p padding-right padding-left *ngIf="version"><b>v {{version[0]}} ({{version[1]}})</b></p>
+    <p padding-right padding-left *ngIf="text" [innerHTML]="text"></p>
+</ion-content>

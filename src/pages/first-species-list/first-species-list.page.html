@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-title>{{ 'ESPECES' | translate }}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="backToHome()">{{ 'ANNULER' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar>
+        <ion-searchbar (ionInput)="filterList()" [(ngModel)]="searchTerm" debounce="750" placeholder="{{ 'RECHERCHER' | translate }}" class="species-ion-searchbar" autofocus></ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <button *ngFor="let species of speciesList" (click)="select(species)" ion-item>
+            <ion-icon name="star" *ngIf="favs"></ion-icon> {{species?.genus}} {{species?.species}} {{species?.subSpecies}}<br>
+            <small class="grey" *ngIf="species">{{vernacularNameFromLang(species)}}</small>
+        </button>
+    </ion-list>
+
+    <p *ngIf="favs" class="grey centered" padding>{{ 'FAV_SPECIES_TEXT' | translate }}</p>
+</ion-content>

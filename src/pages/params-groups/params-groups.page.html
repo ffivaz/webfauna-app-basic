@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-buttons start>
+            <button ion-button (click)="backToParams()">{{ 'RETOUR' | translate }}</button>
+        </ion-buttons>
+        <ion-title>{{ 'GROUPES' | translate }}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="saveGroups()">{{ 'SELECTIONNER' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content data-tap-disabled="true" padding>
+    <p>{{ 'WHICH_GROUP' | translate }}</p>
+    <ion-list>
+        <ion-item *ngFor="let group of allGroups">
+            <ion-label>{{ getGroupFromLang(group) }}</ion-label>
+            <ion-checkbox [(ngModel)]="selection[allGroups.indexOf(group)]"></ion-checkbox>
+        </ion-item>
+    </ion-list>
+</ion-content>

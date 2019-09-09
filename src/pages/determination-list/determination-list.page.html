@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{ 'DETERMINATIONMETH' | translate }}</ion-title>
+    </ion-navbar>
+    <ion-toolbar>
+        <ion-searchbar (ionInput)="filterList()" [(ngModel)]="searchTerm" debounce="500" placeholder="{{ 'RECHERCHER' | translate }}" class="species-ion-searchbar" autofocus></ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list class="list-ios-no-bottom-margin">
+        <button (click)="select(null)" ion-item>
+            {{ 'NO_SELECT' | translate }}
+        </button>
+    </ion-list>
+    <ion-list>
+        <button *ngFor="let l of list" (click)="select(l)" ion-item>
+            {{l?.designation}}
+        </button>
+    </ion-list>
+</ion-content>

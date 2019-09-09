@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-title [innerHTML]="specie?.name"></ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">{{ 'FERMER' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content data-tap-disabled="true">
+    <div>
+        <ion-icon name="refresh-circle" *ngIf="moveSign" class="middle-of-page"></ion-icon>
+    </div>
+    <div class="fond-bleu" padding>
+        {{ 'GO_TO_FORM_LISTE' | translate }}
+        <ion-buttons end>
+            <button ion-button (click)="toInsert()">{{ 'INSERT' | translate }}</button>
+        </ion-buttons>
+    </div>
+    <div (swipe)="swipe($event)">
+        <h4 [innerHTML]="specie?.name" padding-right padding-left></h4>
+        <p padding-right padding-left>
+            FR: <span [innerHTML]="specie?.fr"></span><br>
+            DE: <span [innerHTML]="specie?.de"></span><br>
+            IT: <span [innerHTML]="specie?.it"></span><br>
+        </p>
+        <p *ngFor="let img of specie?.leadimg">
+            <img src="{{filePath}}{{groupInfo.short}}/r_images/{{img.filename}}">
+        </p>
+        <p padding-right padding-left *ngIf="specie" [innerHTML]="returnDescriptionWithLang()"></p>
+        <p padding-left padding-right *ngFor="let img of specie?.imgs">
+            <img src="{{filePath}}{{groupInfo.short}}/r_images/{{img.filename}}">
+            <span [innerHTML]="returnCaptionWithLang(img)"></span>
+        </p>
+    </div>
+</ion-content>
+

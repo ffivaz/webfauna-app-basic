@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>webfauna2 - interface saisie info fauna</title>
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4e8ef7">
+
+    <link href="build/main.css" rel="stylesheet">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log('service worker installed'))
+        .catch(err => console.log('Error', err));
+        }
+    </script>
+    <script src="cordova.js"></script>
+</head>
+<body>
+
+<ion-app></ion-app>
+
+<script src="build/polyfills.js"></script>
+<script src="build/vendor.js"></script>
+<script src="build/main.js"></script>
+
+</body>
+</html>

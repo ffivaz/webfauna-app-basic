@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-title>{{ 'IMAGES' | translate }}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="saveImages()">{{ 'ENREGISTRER' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div *ngFor="let img of imgUrl" class="img-block">
+        <img class="small-image" src="{{img}}" (click)="openImageMod(img)">
+    </div>
+</ion-content>
+
+<ion-footer padding>
+    <button ion-button block (click)="takePic()">{{ 'ADD_PIC' | translate }}</button>
+    <button ion-button block (click)="picFromLibrary()">{{ 'ADD_PIC_FROM_LIB' | translate }}</button>
+</ion-footer>

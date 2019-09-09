@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{ 'COORD_PRECISION' | translate }}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <button *ngFor="let l of list" (click)="select(l)" ion-item>
+            {{l?.designation}}
+        </button>
+    </ion-list>
+</ion-content>

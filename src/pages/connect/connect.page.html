@@ -1,0 +1,54 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{ 'CONNECT' | translate }}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="backToHome()">{{ 'RETOUR' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <div *ngIf="!isConnected && hasNetwork">
+        <p>{{ 'CONNECT_INVITE' | translate }}</p>
+
+        <ion-list>
+            <ion-item>
+                <ion-input type="email" [(ngModel)]="credentials.email" [ngModelOptions]="{standalone: true}" placeholder="{{ 'ADR_EMAIL' | translate }}"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-input type="password" [(ngModel)]="credentials.password" [ngModelOptions]="{standalone: true}" placeholder="{{ 'PASSWORD' | translate }}"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>{{ 'STAYCONNECTED' | translate }}</ion-label>
+                <ion-checkbox [(ngModel)]="keepMeConnected"></ion-checkbox>
+            </ion-item>
+        </ion-list>
+
+        <button ion-button block (click)="connect()">{{ 'CONNECT' | translate }}</button>
+
+        <p class="centered"><a (click)="lostPassword()">{{ 'PW_FORGET' | translate }}</a></p>
+        <p class="centered"><a (click)="toRegister()">{{ 'PASCOMPTE' | translate }}</a></p>
+    </div>
+
+    <div *ngIf="isConnected && hasNetwork">
+        <p class="centered">{{ 'CONNECTED_AS' | translate }}</p>
+        <button ion-button block (click)="disconnect()">{{ 'DISCONNECT' | translate }}</button>
+        <p *ngIf="user" padding><b>{{ 'CONN_INFO' | translate }}</b><br><br>
+            <b>{{ 'NAME' | translate }}</b>: {{user?.firstName}} {{user?.lastName}}<br>
+            <b>{{ 'ADR_EMAIL' | translate }}</b>: {{user?.email}}<br>
+            <b>{{ 'INSTITUTION' | translate }}</b>: {{user?.institution}}
+        </p>
+        <p *ngIf="!user">
+            {{ 'ERROR_CONN' | translate }}
+        </p>
+    </div>
+
+    <div *ngIf="!hasNetwork">
+        <p class="centered">{{ 'NO_NETWORK_CONN' | translate }}</p>
+    </div>
+
+</ion-content>

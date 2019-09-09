@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-buttons start>
+            <button ion-button (click)="backToHome()">{{ 'ACCUEIL' | translate }}</button>
+        </ion-buttons>
+        <ion-title>{{groupName}} - {{ 'ESPECES' | translate }}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="backToGroups()">{{ 'RETOUR' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar>
+        <ion-searchbar (ionInput)="filterList()" [(ngModel)]="searchTerm" debounce="500" placeholder="{{ 'RECHERCHER' | translate }}" class="species-ion-searchbar" autofocus></ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <button *ngFor="let specie of species" ion-item (click)="openModal(specie)">
+            <span [innerHTML]="specie?.name"></span><br>
+            <small class="grey" [innerHTML]="getNameWithLang(specie)"></small>
+        </button>
+    </ion-list>
+</ion-content>

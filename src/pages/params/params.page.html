@@ -1,0 +1,56 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{ 'PARAMETRES' | translate }}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="backToHome()">{{ 'RETOUR' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <h4>{{ 'LANGUE' | translate }}<br>
+    <small class="grey-small-h4">{{ 'RESTART_NEEDED' | translate }}</small></h4>
+    <ion-list radio-group (ionChange)="saveLangSettings();" [(ngModel)]="lang">
+        <ion-item>
+            <ion-label>Français</ion-label>
+            <ion-radio value="fr"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>Deutsch</ion-label>
+            <ion-radio value="de"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>Italiano</ion-label>
+            <ion-radio value="it"></ion-radio>
+        </ion-item>
+    </ion-list>
+
+    <h4>{{ 'ORDRE_ENTREE' | translate }}<br>
+        <small class="grey-small-h4">{{ 'RESTART_NEEDED' | translate }}</small></h4>
+    <ion-list radio-group (ionChange)="saveMapFirstSettings();" [(ngModel)]="mapFirst">
+        <ion-item>
+            <ion-label>{{'CARTE' | translate }}</ion-label>
+            <ion-radio value="map"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{ 'ESPECES' | translate }}</ion-label>
+            <ion-radio value="esp"></ion-radio>
+        </ion-item>
+    </ion-list>
+
+    <h4>{{ 'GROUPS_KEYS' | translate }}</h4>
+    <ion-list>
+        <button ion-item (click)="toGroupSelectPage()">
+            {{ 'WHICH_GROUP_SHORT' | translate }}<br>
+            <small class="grey">{{ 'GROUP_LIMIT' | translate }}</small></button>
+        <button ion-item (click)="toDeteGroupSelectPage()">
+            {{ 'WHICH_DETE_GROUP_SHORT' | translate }}<br>
+            <small class="grey">{{ 'DWNLD_KEYS' | translate }}</small>
+        </button>
+    </ion-list>
+
+</ion-content>

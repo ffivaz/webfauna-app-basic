@@ -1,0 +1,125 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{ 'OBSERVATIONS' | translate }}</ion-title>
+        <ion-buttons end>
+            <button *ngIf="!sendMode && isConnected" ion-button (click)="toSendMode()" [disabled]="sendDisabled || !hasNet">
+                {{ 'ENVOYER' | translate }}
+            </button>
+            <button *ngIf="!sendMode && !isConnected" ion-button (click)="toConnectionPage()" [disabled]="!hasNet ">
+                {{ 'CONNECT' | translate }}
+            </button>
+            <button *ngIf="sendMode" ion-button (click)="toNormalMode()">
+                {{ 'ANNULER' | translate }}
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <div class="fond-bleu" padding
+         *ngIf="sendMode && notUpdatedLocalObservations && notUpdatedLocalObservations.length > 0 && finishedLoading">
+        {{ 'SEL_MESSAGE' | translate }}
+        <button *ngIf="!sendInProgress" ion-button (click)="sendData()">{{ 'ENVOYER' | translate }}</button>
+        <progress-bar *ngIf="sendInProgress" [progress]="loadProgress"></progress-bar>
+    </div>
+
+    <div class="fond-bleu" padding *ngIf="sendMode && !notUpdatedLocalObservations && finishedLoading">
+        {{ 'NO_DATA_MESSAGE' | translate }}
+    </div>
+
+    <ion-list *ngIf="sendMode && notUpdatedLocalObservations && notUpdatedLocalObservations.length > 0 && finishedLoading">
+        <ion-item *ngFor="let notUpdatedLocalObservation of notUpdatedLocalObservations">
+            <ion-label>{{notUpdatedLocalObservation.speciesId | speciesName | async}}<br>
+                <small class="grey">{{notUpdatedLocalObservation.speciesId | vernacularName | async}}</small>
+                <br>
+                {{notUpdatedLocalObservation.dateDay}}.{{notUpdatedLocalObservation.dateMonth}}.{{notUpdatedLocalObservation.dateYear}}<br>
+                {{notUpdatedLocalObservation.localite}}
+            </ion-label>
+            <ion-checkbox
+                    [(ngModel)]="selection[notUpdatedLocalObservations.indexOf(notUpdatedLocalObservation)]"></ion-checkbox>
+        </ion-item>
+    </ion-list>
+
+    <ion-list [hidden]="sendMode || !localObservations || !finishedLoading">
+            <button ion-item detail-none *ngFor="let localObservation of localObservations" (click)="openActionSheet(localObservation)">
+                <h2 *ngIf="localObservation.speciesId">{{localObservation.speciesId | speciesName | async}}<br>
+                    <small class="grey">{{localObservation.speciesId | vernacularName | async}}</small>
+                </h2>
+                <h3>{{localObservation.dateDay}}.{{localObservation.dateMonth}}.{{localObservation.dateYear}}</h3>
+                <p>{{localObservation.localite}}</p>
+                <ion-icon *ngIf="localObservation.uploaded == 1" name="cloud" item-end></ion-icon>
+                <ion-icon name="more" item-end></ion-icon>
+            </button>
+    </ion-list>
+
+    <ion-list *ngIf="!finishedLoading">
+        <ion-item class="fakeItem">
+            <h2></h2>
+            <h3></h3>
+            <p></p>
+        </ion-item>
+        <ion-item class="fakeItem">
+            <h2></h2>
+            <h3></h3>
+            <p></p>
+        </ion-item>
+        <ion-item class="fakeItem">
+            <h2></h2>
+            <h3></h3>
+            <p></p>
+        </ion-item>
+        <ion-item class="fakeItem">
+            <h2></h2>
+            <h3></h3>
+            <p></p>
+        </ion-item>
+        <ion-item class="fakeItem">
+            <h2></h2>
+            <h3></h3>
+            <p></p>
+        </ion-item>
+        <ion-item class="fakeItem">
+            <h2></h2>
+            <h3></h3>
+            <p></p>
+        </ion-item>
+        <ion-item class="fakeItem">
+            <h2></h2>
+            <h3></h3>
+            <p></p>
+        </ion-item>
+    </ion-list>
+
+    <div [hidden]="sendMode || !localObservations || !finishedLoading" *ngIf="localObservations?.length == limit">
+        <p class="centered">
+            <a (click)="addLimit()">{{ 'LOAD_MORE' | translate }}</a>
+        </p>
+    </div>
+
+    <div *ngIf="!localObservations || !finishedLoading" padding>
+        <h4 class="centered"></h4>
+        <h4 class="grey centered">{{ 'NO_LOCAL_OBS' | translate }}</h4>
+        <p class="grey centered">{{ 'CLIC_TO_ADD' | translate }}</p>
+    </div>
+
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-buttons class="flex-container">
+            <button ion-button icon-only clear class="flex-item" (click)="archiveSentData()">
+                <ion-icon name="trash"></ion-icon>
+            </button>
+            <button ion-button icon-only clear class="flex-item" (click)="toInsert()">
+                <ion-icon name="add-circle"></ion-icon>
+            </button>
+            <button ion-button icon-only clear class="flex-item" (click)="toDetermination()">
+                <ion-icon name="search"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

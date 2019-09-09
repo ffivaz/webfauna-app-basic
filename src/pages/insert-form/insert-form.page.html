@@ -1,0 +1,140 @@
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-buttons end>
+            <button *ngIf="rowid==undefined" ion-button (click)="saveInsert()">{{ 'ENREGISTRER' | translate }}</button>
+            <button *ngIf="rowid!=null" ion-button (click)="saveInsert()">{{ 'MAJ' | translate }}</button>
+        </ion-buttons>
+        <ion-title>{{ 'AJOUTER' | translate }}</ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="cancelInsert()">{{ 'ANNULER' | translate }}</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <button ion-item (click)="toSpeciesListPage()">
+            <h3 *ngIf="observation.speciesId" class="green category-title">{{ 'ESPECE' | translate }}</h3>
+            <h3 *ngIf="!observation.speciesId" class="red category-title">{{ 'ESPECE' | translate }}</h3>
+            <h2 *ngIf="observation.speciesId">{{observation.speciesId | speciesName | async}}<br>
+                <small class="grey">{{observation.speciesId | vernacularName | async}}</small></h2>
+            <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+        </button>
+        <ion-item>
+            <h3 class="green category-title">{{ 'LOCALISATION' | translate }}</h3>
+            <h2>{{observation.swissCoordinatesX}} /
+                {{observation.swissCoordinatesY}}</h2>
+            <button ion-button clear item-end (click)="fixCoordinates()" icon-only>
+                <ion-icon name="pin" *ngIf="!geoSearch"></ion-icon>
+                <ion-spinner *ngIf="geoSearch"></ion-spinner>
+            </button>
+            <button *ngIf="hasNetwork" ion-button clear item-end (click)="toMapPage()" icon-only>
+                <ion-icon name="map"></ion-icon>
+            </button>
+        </ion-item>
+        <button ion-item (click)="toPrecisionPage()">
+            <h3 *ngIf="!observation.precisionCode" class="red category-title">{{ 'PRECISION' | translate }}</h3>
+            <h3 *ngIf="observation.precisionCode" class="green category-title">{{ 'PRECISION' | translate }}</h3>
+            <h2 *ngIf="observation.precisionCode">{{observation.precisionCode | realmExtractor: 'prd':'fr' | async}}</h2>
+            <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+        </button>
+        <ion-item>
+            <ion-label stacked>
+                <h3 *ngIf="observation.localite" class="green category-title">{{ 'LOCALITE' | translate }}</h3>
+                <h3 *ngIf="!observation.localite" class="grey category-title">{{ 'LOCALITE' | translate }}</h3>
+            </ion-label>
+            <ion-input [(ngModel)]="observation.localite" type="text" placeholder="{{ 'LOCALITE_TEXT' | translate }}" maxlength="60" clearInput></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>
+                <h3 class="category-title black">{{ 'DATE' | translate }}</h3>
+            </ion-label>
+            <ion-datetime displayFormat="D MMMM YYYY" pickerFormat="D MMMM YYYY"
+                          monthNames="{{ 'MOIS' | translate }}"
+                          [ngModel]="date | moment" (ngModelChange)="date = $event"></ion-datetime>
+        </ion-item>
+        <button ion-item *ngIf="observation.groupId" (click)="toIdentificationPage()">
+            <h3 *ngIf="observation.identificationMethodCode" class="green category-title">{{ 'IDENTIFICATION' | translate }}</h3>
+            <h3 *ngIf="!observation.identificationMethodCode" class="red category-title">{{ 'IDENTIFICATION' | translate }}</h3>
+            <h2 *ngIf="observation.identificationMethodCode">{{observation.identificationMethodCode | realmExtractor: 'mth':lang | async}}</h2>
+            <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+        </button>
+        <ion-item *ngIf="!observation.groupId">
+            <h3 class="red">{{ 'IDENTIFICATION' | translate }}</h3>
+        </ion-item>
+        <button ion-item *ngIf="observation.groupId" (click)="toDeterminationMethodPage()">
+            <h3 *ngIf="observation.samplingMethodCode" class="green category-title">{{ 'DETERMINATIONMETH' | translate }}</h3>
+            <h3 *ngIf="!observation.samplingMethodCode" class="grey category-title">{{ 'DETERMINATIONMETH' | translate }}</h3>
+            <h2 *ngIf="observation.samplingMethodCode">{{observation.samplingMethodCode | realmExtractor: 'mec':lang | async}}</h2>
+            <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+        </button>
+        <ion-item *ngIf="!observation.groupId">
+            <h3 class="grey">{{ 'DETERMINATIONMETH' | translate }}</h3>
+        </ion-item>
+        <button ion-item (click)="toAbondancePage()">
+            <h3 *ngIf="hasAbundance" class="green category-title">{{ 'ABONDANCE' | translate }}</h3>
+            <h3 *ngIf="!hasAbundance" class="grey category-title">{{ 'ABONDANCE' | translate }}</h3>
+            <h2>{{formatAbondance(observation)}}</h2>
+            <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+        </button>
+        <ion-item>
+            <ion-label stacked>
+                <h3 *ngIf="observation.projet" class="green category-title">{{ 'PROJET' | translate }}</h3>
+                <h3 *ngIf="!observation.projet" class="grey category-title">{{ 'PROJET' | translate }}</h3>
+            </ion-label>
+            <ion-input [(ngModel)]="observation.projet" type="text" placeholder="{{ 'CODE_PROJET' | translate }}" maxlength="35" clearInput></ion-input>
+        </ion-item>
+        <button ion-item (click)="toImagesPage()">
+            <h3 *ngIf="!observation.img_url" class="category-title">{{ 'IMAGES' | translate }}</h3>
+            <h3 *ngIf="observation.img_url" class="green category-title">{{ 'IMAGES' | translate }}</h3>
+            <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+        </button>
+        <ion-list-header (click)="developComplementList()">
+            {{ 'INFO_COMPLEMENT' | translate }}
+            <button ion-button clear item-end icon-only>
+                <ion-icon *ngIf="!openComplementList" name="add-circle"></ion-icon>
+                <ion-icon *ngIf="openComplementList" name="remove-circle"></ion-icon>
+            </button>
+        </ion-list-header>
+        <div *ngIf="openComplementList">
+            <button ion-item (click)="toEnvironnementPage()">
+                <h3 *ngIf="!observation.environmentCode" class="grey category-title">{{ 'ENVIRONNEMENT' | translate }}</h3>
+                <h3 *ngIf="observation.environmentCode" class="green category-title">{{ 'ENVIRONNEMENT' | translate }}</h3>
+                <h2 *ngIf="observation.environmentCode">{{observation.environmentCode | realmExtractor: 'env':lang | async}}</h2>
+                <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+            </button>
+            <button ion-item (click)="toMilieuPage()">
+                <h3 *ngIf="!observation.milieuCode" class="grey category-title">{{ 'MILIEUX' | translate}}</h3>
+                <h3 *ngIf="observation.milieuCode" class="green category-title">{{ 'MILIEUX' | translate }}</h3>
+                <h2 *ngIf="observation.milieuCode">{{observation.milieuCode | realmExtractor: 'typ':lang | async}} ({{observation.milieuCode.replace('-', '')}})</h2>
+                <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+            </button>
+            <button ion-item (click)="toStructurePage()">
+                <h3 *ngIf="!observation.structureCode" class="grey category-title">{{ 'STRUCTURE' | translate }}</h3>
+                <h3 *ngIf="observation.structureCode" class="green category-title">{{ 'STRUCTURE' | translate }}</h3>
+                <h2 *ngIf="observation.structureCode">{{observation.structureCode | realmExtractor: 'tsp':lang | async}}</h2>
+                <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+            </button>
+            <button ion-item (click)="toSubstratPage()">
+                <h3 *ngIf="!observation.substratCode" class="grey category-title">{{ 'SUBSTRAT' | translate }}</h3>
+                <h3 *ngIf="observation.substratCode" class="green category-title">{{ 'SUBSTRAT' | translate }}</h3>
+                <h2 *ngIf="observation.substratCode">{{observation.substratCode | realmExtractor: 'sbt':lang | async}}</h2>
+                <ion-icon *ngIf="pl.is('android')" name="arrow-dropright" class="grey" item-end></ion-icon>
+            </button>
+            <ion-item>
+                <ion-label stacked>
+                    <h3 *ngIf="observation.objectNumber" class="green category-title">{{ 'NUM_OBJET' | translate }}</h3>
+                    <h3 *ngIf="!observation.objectNumber" class="grey category-title">{{ 'NUM_OBJET' | translate }}</h3>
+                </ion-label>
+                <ion-input [(ngModel)]="observation.objectNumber" type="text" placeholder="{{ 'ENTER_NUM_OBJET' | translate }}" maxlength="35" clearInput></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label stacked>
+                    <h3 *ngIf="observation.remark" class="green category-title">{{ 'REMARQUES' | translate }}</h3>
+                    <h3 *ngIf="!observation.remark" class="grey category-title">{{ 'REMARQUES' | translate }}</h3>
+                </ion-label>
+                <ion-textarea [(ngModel)]="observation.remark" placeholder="{{ 'ENTER_REMARQUES' | translate }}" maxlength="255"></ion-textarea>
+            </ion-item>
+        </div>
+    </ion-list>
+</ion-content>
