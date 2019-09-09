@@ -1,0 +1,9 @@
+{
+  "name": "webfauna-basic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "id": "ch.cscf.webfauna-basic",
+  "app_id": ""
+}
