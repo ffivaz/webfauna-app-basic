@@ -62,6 +62,7 @@
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "^4.5.1",
     "moment": "^2.23.0",
+    "openlayers": "^4.6.5",
     "proj4": "^2.5.0",
     "rxjs": "^5.5.12",
     "sw-toolbox": "^3.6.0",
@@ -95,6 +96,10 @@
       "cordova-sqlite-storage": {},
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-app-version": {}
-    }
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ]
   }
 }

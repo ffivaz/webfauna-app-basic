@@ -5,14 +5,7 @@ import {InsertFormPage} from "../insert-form/insert-form.page";
 import {SimpleObservationModel} from "../../models/simple-observation.model";
 import {HomeListPage} from "../home-list/home-list.page";
 import {Component, NgZone, OnInit} from "@angular/core";
-import {
-    GoogleMap,
-    GoogleMapOptions,
-    GoogleMaps,
-    GoogleMapsEvent,
-    GoogleMapsMapTypeId,
-    LatLng
-} from "@ionic-native/google-maps";
+import ol from "openlayers";
 
 @Component({
     selector: 'page-map-insert',
@@ -20,7 +13,7 @@ import {
 })
 export class InsertMapPage implements OnInit {
 
-    map: GoogleMap;
+    map: any;
     zoom: number = 18;
     swissProjection = '+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs';
     currentLoc = {
@@ -72,7 +65,7 @@ export class InsertMapPage implements OnInit {
 
     goToCurrentLocation() {
         this.searching = true;
-        this.gl.getCurrentPosition({'enableHighAccuracy': true})
+        /*this.gl.getCurrentPosition({'enableHighAccuracy': true})
             .then(position => {
                 let googlePosition: LatLng = new LatLng(position.coords.latitude, position.coords.longitude);
                 this.map.moveCamera({
@@ -88,17 +81,17 @@ export class InsertMapPage implements OnInit {
                 this.currentLoc.pralti = Math.round(position.coords.altitudeAccuracy);
                 this.observation.precisionCode = this.whatPrecision(Math.round(position.coords.accuracy));
                 this.searching = false;
-            });
+            });*/
     }
 
     switchMapType() {
-        if (this.mapType == 'SATELLITE') {
+        /*if (this.mapType == 'SATELLITE') {
             this.mapType = 'ROADMAP'
         } else {
             this.mapType = 'SATELLITE'
         }
 
-        this.map.setMapTypeId(GoogleMapsMapTypeId[this.mapType]);
+        this.map.setMapTypeId(GoogleMapsMapTypeId[this.mapType]);*/
     }
 
     backToInsert() {
@@ -123,7 +116,7 @@ export class InsertMapPage implements OnInit {
         this.currentLoc.X = this.observation.swissCoordinatesX;
         this.currentLoc.Y = this.observation.swissCoordinatesY;
 
-        let googlePosition: LatLng = new LatLng(wgsCoords[1], wgsCoords[0]);
+        /*let googlePosition: LatLng = new LatLng(wgsCoords[1], wgsCoords[0]);
 
         let mapOptions: GoogleMapOptions = {
             mapType: GoogleMapsMapTypeId.SATELLITE,
@@ -142,11 +135,18 @@ export class InsertMapPage implements OnInit {
                 'zoom': false,
                 'mapToolbar': true
             }
-        };
+        };*/
 
-        this.map = GoogleMaps.create('map-canvas', mapOptions);
+        this.map = new ol.Map({
+            layers: [new ol.layer.Tile({ source: new ol.source.OSM() })],
+            target: document.getElementById('olmap'),
+            view: new ol.View({
+                center: ol.proj.transform([-0.12755, 51.507222], 'EPSG:4326', 'EPSG:3857'),
+                zoom: 3
+            })
+        });
 
-        this.map.on(GoogleMapsEvent.MAP_DRAG_END)
+        /*this.map.on(GoogleMapsEvent.MAP_DRAG_END)
             .subscribe(() => {
                 let wgsCoords = proj4('EPSG:4326', this.swissProjection, [this.map.getCameraPosition().target.lng, this.map.getCameraPosition().target.lat]);
                 this.z.run(() => {
@@ -161,7 +161,7 @@ export class InsertMapPage implements OnInit {
                 });
             });
 
-        this.searching = false;
+        this.searching = false;*/
 
     }
 

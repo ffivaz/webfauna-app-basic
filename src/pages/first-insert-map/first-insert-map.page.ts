@@ -8,16 +8,15 @@ import {HomeListPage} from "../home-list/home-list.page";
 import {Network} from "@ionic-native/network";
 import {TranslateService} from "@ngx-translate/core";
 import {Storage} from "@ionic/storage";
+import ol from "openlayers";
 
 @Component({
     selector: 'first-page-map-insert',
     templateUrl: 'first-insert-map.page.html'
 })
 export class FirstInsertMapPage implements OnInit {
-    map: GoogleMap;
-    mapType: string = 'SATELLITE';
+    map: any;
     searching: boolean = false;
-
     zoom: number = 18;
     observation: SimpleObservationModel = {
         rowid: null,
@@ -112,7 +111,7 @@ export class FirstInsertMapPage implements OnInit {
 
     goToCurrentLocation() {
         this.searching = true;
-        this.gl.getCurrentPosition({'enableHighAccuracy': true})
+        /*this.gl.getCurrentPosition({'enableHighAccuracy': true})
             .then(position => {
                 let googlePosition: LatLng = new LatLng(position.coords.latitude, position.coords.longitude);
                 this.map.moveCamera({
@@ -127,13 +126,13 @@ export class FirstInsertMapPage implements OnInit {
                 this.observation.precisionCode = this.whatPrecision(Math.round(position.coords.accuracy));
                 this.searching = false;
                 this.s.set('lastcoords', [this.currentLoc.X, this.currentLoc.Y]);
-            });
+            });*/
     }
 
     backToInsert() {
-        let wgsCoords = proj4('EPSG:4326', this.swissProjection, [this.map.getCameraPosition().target.lng, this.map.getCameraPosition().target.lat]);
+        /*let wgsCoords = proj4('EPSG:4326', this.swissProjection, [this.map.getCameraPosition().target.lng, this.map.getCameraPosition().target.lat]);
         this.observation.swissCoordinatesX = Math.round(wgsCoords[0]);
-        this.observation.swissCoordinatesY = Math.round(wgsCoords[1]);
+        this.observation.swissCoordinatesY = Math.round(wgsCoords[1]);*/
         this.nc.setRoot(InsertFormPage, {
             'obs': this.observation,
             'fix': true
@@ -141,13 +140,13 @@ export class FirstInsertMapPage implements OnInit {
     }
 
     switchMapType() {
-        if (this.mapType == 'SATELLITE') {
+        /*if (this.mapType == 'SATELLITE') {
             this.mapType = 'ROADMAP'
         } else {
             this.mapType = 'SATELLITE'
         }
 
-        this.map.setMapTypeId(GoogleMapsMapTypeId[this.mapType]);
+        this.map.setMapTypeId(GoogleMapsMapTypeId[this.mapType]);*/
     }
 
     backToHome() {
@@ -173,9 +172,9 @@ export class FirstInsertMapPage implements OnInit {
 
                 let wgsCoords = proj4(this.swissProjection, 'EPSG:4326', [this.currentLoc.X, this.currentLoc.Y]);
 
-                let googlePosition: LatLng = new LatLng(wgsCoords[1], wgsCoords[0]);
+                //let googlePosition: LatLng = new LatLng(wgsCoords[1], wgsCoords[0]);
 
-                let mapOptions: GoogleMapOptions = {
+                /*let mapOptions: GoogleMapOptions = {
                     mapType: GoogleMapsMapTypeId.SATELLITE,
 
                     camera: {
@@ -192,11 +191,18 @@ export class FirstInsertMapPage implements OnInit {
                         'zoom': false,
                         'mapToolbar': true
                     }
-                };
+                };*/
 
-                this.map = GoogleMaps.create('map-canvas', mapOptions);
+                this.map = new ol.Map({
+                    layers: [new ol.layer.Tile({ source: new ol.source.OSM() })],
+                    target: document.getElementById('olmap'),
+                    view: new ol.View({
+                        center: ol.proj.transform([-0.12755, 51.507222], 'EPSG:4326', 'EPSG:3857'),
+                        zoom: 3
+                    })
+                });
 
-                this.map.one(GoogleMapsEvent.MAP_READY)
+                /*this.map.one(GoogleMapsEvent.MAP_READY)
                     .then(() => {
                         this.gl.getCurrentPosition({'enableHighAccuracy': true})
                             .then(position => {
@@ -229,7 +235,7 @@ export class FirstInsertMapPage implements OnInit {
                             this.currentLoc.pralti = null;
                             this.observation.precisionCode = null;
                         });
-                    });
+                    });*/
             });
 
     }
