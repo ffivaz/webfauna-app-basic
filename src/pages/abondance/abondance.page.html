@@ -1,63 +1,75 @@
 <ion-header>
-    <ion-navbar hideBackButton>
-        <ion-buttons end>
-            <button ion-button (click)="saveInsert()">{{ 'RETOUR' | translate }}</button>
-        </ion-buttons>
-        <ion-title>{{ 'ABONDANCE' | translate }}</ion-title>
-    </ion-navbar>
+  <ion-navbar hideBackButton>
+    <ion-buttons end>
+      <button ion-button (click)="saveInsert()">{{ 'RETOUR' | translate }}</button>
+    </ion-buttons>
+    <ion-title>{{ 'ABONDANCE' | translate }}</ion-title>
+  </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-list>
-        <ion-list-header>{{ 'STADE' | translate }}</ion-list-header>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_IND' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.individuals" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_MAL' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.males" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_FEM' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.females" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_OEU' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.eggs" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_LAR' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.larvae" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_EXU' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.exuviae" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_NYM' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.nymphs" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_SUB' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.subadults" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_COLL' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.collection" clearInput></ion-input>
-        </ion-item>
-        <ion-list-header>{{ 'COMPORTEMENT' | translate }}</ion-list-header>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_ACC' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.mating" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_TANDEM' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.tandem" clearInput></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>{{ 'NB_CLUTCH' | translate }}</ion-label>
-            <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.clutch" clearInput></ion-input>
-        </ion-item>
-    </ion-list>
+  <ion-list>
+    <ion-list-header>{{ 'STADE' | translate }}</ion-list-header>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_IND' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.individuals"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_MAL' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.males"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_FEM' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.females"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_OEU' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.eggs"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_LAR' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.larvae"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_EXU' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.exuviae"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_NYM' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.nymphs"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_SUB' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.subadults"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_COLL' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.collection"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-list-header>{{ 'COMPORTEMENT' | translate }}</ion-list-header>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_ACC' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.mating"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_TANDEM' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.tandem"
+                 clearInput></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'NB_CLUTCH' | translate }}</ion-label>
+      <ion-input type="number" placeholder="{{ 'NB' | translate }}" [(ngModel)]="observation.clutch"
+                 clearInput></ion-input>
+    </ion-item>
+  </ion-list>
 </ion-content>
