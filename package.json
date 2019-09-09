@@ -39,6 +39,7 @@
     "@ionic/storage": "^2.2.0",
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
+    "@types/openlayers": "^4.6.17",
     "android-versions": "^1.4.0",
     "cordova": "^8.1.2",
     "cordova-android": "^8.0.0",

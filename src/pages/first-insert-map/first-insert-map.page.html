@@ -20,9 +20,6 @@
         <div padding-left>{{currentLoc.X}} / {{currentLoc.Y}} <span *ngIf="currentLoc.pr">(&plusmn;{{currentLoc.pr}} m)</span><br *ngIf="currentLoc.alti">
             <span *ngIf="currentLoc.alti">{{currentLoc.alti}} m (&plusmn;{{currentLoc.pralti}} m)</span></div>
         <ion-buttons end>
-            <button ion-button icon-only (click)="switchMapType()">
-                <ion-icon name="switch"></ion-icon>
-            </button>
             <button ion-button icon-only (click)="goToCurrentLocation()" [disabled]="searching">
                 <ion-icon name="pin" *ngIf="!searching"></ion-icon>
                 <ion-spinner *ngIf="searching"></ion-spinner>
