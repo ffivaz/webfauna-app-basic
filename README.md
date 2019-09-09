@@ -8,3 +8,10 @@ Le code est mis à disposition gratuitement sous licence MIT. Vous pouvez faire 
 La mise à disposition et la documentation du code est en cours (septembre 2019). Jusqu'à que ce soit complet, il est possible que le code ne fonctionne pas correctement.
 
 L'application utilise une API pour intéragir avec notre serveur de données. Ces accés ne sont pas publics et nécessitent un compte (https://webfauna.cscf.ch). L'API sera sommairement décrite pour permettre la mise en place d'une structure similaire.  
+
+Pour créer une version utilisable sur un téléphone (par exemple android) :
+```
+npm install
+ionic cordova run android --prod
+```
+A noter que pour que tout fonctionne, vous devez installer un environnement android / iOS sur votre ordinateur. Vous trouverez d'innombrables ressources dans ce sens sur Internet.
