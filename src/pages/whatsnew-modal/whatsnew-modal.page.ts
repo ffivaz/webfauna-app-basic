@@ -1,3 +1,7 @@
+/** Lorsque le numéro de version est incrémenté dans /config.xml, l'application affiche un modal lors de la première ouverture, permettant d'informer
+ * l'utilisateur des nouveautés. Les fichiers html, par langue, sont dans /src/assets/i18n/whatsnew.*lang*.html.
+ * L'affichage (ou non) du modal est géré par la page parincipale (home-list). */
+
 import {Component, OnInit} from "@angular/core";
 import {NavParams, ViewController} from "ionic-angular";
 import {AppVersion} from "@ionic-native/app-version";
