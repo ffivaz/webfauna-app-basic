@@ -134,12 +134,8 @@ export class FirstInsertMapPage implements OnInit {
     }
 
     backToInsert() {
-        let wgsCoords = proj4('EPSG:4326', this.swissProjection, [this.map.getView().getCenter()[0], this.map.getView().getCenter()[1]]);
-        this.observation.swissCoordinatesX = Math.round(wgsCoords[0]);
-        this.observation.swissCoordinatesY = Math.round(wgsCoords[1]);
         this.nc.setRoot(InsertFormPage, {
-            'obs': this.observation,
-            'fix': true
+            'obs': this.observation
         });
     }
 
@@ -180,12 +176,12 @@ export class FirstInsertMapPage implements OnInit {
 
                 let that = this;
                 this.map.on('moveend', function () {
-                    let wgsCoords = proj4('EPSG:3857', that.swissProjection, that.map.getView().getCenter());
-                    that.observation.swissCoordinatesX = Math.round(wgsCoords[0]);
-                    that.observation.swissCoordinatesY = Math.round(wgsCoords[1]);
+                    let swissCoords = proj4('EPSG:3857', that.swissProjection, that.map.getView().getCenter());
+                    that.observation.swissCoordinatesX = Math.round(swissCoords[0]);
+                    that.observation.swissCoordinatesY = Math.round(swissCoords[1]);
                     that.currentLoc = {
-                        X: Math.round(wgsCoords[0]),
-                        Y: Math.round(wgsCoords[1]),
+                        X: Math.round(swissCoords[0]),
+                        Y: Math.round(swissCoords[1]),
                         pr: null,
                         alti: null,
                         pralti: null
