@@ -29,7 +29,6 @@ export class InsertMapPage implements OnInit {
         pralti: null
     };
     observation: SimpleObservationModel;
-    mapType: string = 'SATELLITE';
     searching: boolean = true;
 
     constructor(private nc: NavController,
@@ -117,21 +116,7 @@ export class InsertMapPage implements OnInit {
             })
         });
 
-        this.gl.getCurrentPosition({'enableHighAccuracy': true})
-            .then(position => {
-                const {longitude, latitude, accuracy, altitude, altitudeAccuracy} = position.coords;
-                let swissCoords = proj4('EPSG:4326', this.swissProjection, [longitude, latitude]);
-                this.map.getView().setCenter(ol.proj.fromLonLat([longitude, latitude]));
-                this.currentLoc = {
-                    X: Math.round(swissCoords[0]),
-                    Y: Math.round(swissCoords[1]),
-                    pr: Math.round(accuracy),
-                    alti: Math.round(altitude),
-                    pralti: Math.round(altitudeAccuracy)
-                };
-                this.observation.precisionCode = this.whatPrecision(Math.round(accuracy));
-                this.searching = false;
-            });
+        this.goToCurrentLocation();
 
         let that = this;
         this.map.on('moveend', function () {
