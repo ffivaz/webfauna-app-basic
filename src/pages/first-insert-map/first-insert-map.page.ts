@@ -1,3 +1,9 @@
+/** Page affichant la carte OpenStreetMap (elle apparaît lorsque l'utilisateur choisit de commencer la saisie par les cartes (cf. paramètres).
+ *  Le déplacement de la carte met à jour les coordonnées (qui deviennent "manuelles", l'utilisateur devant renseigner la précision).
+ *  La localisation se fait via le plugin natif ionic Geolocation  https://ionicframework.com/docs/native/geolocation
+ *  Pour des raisons énergétiques, le choix s'est porté sur getCurrentPosition() plutôt que sur watchPosition()
+ *  Le plugin natif ionic Network est utilisé pour tester si le téléphone est connecté au réseau. Un message apparaît sans réseau */
+
 import {Component, OnInit} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 import {Geolocation} from '@ionic-native/geolocation';
@@ -60,7 +66,6 @@ export class FirstInsertMapPage implements OnInit {
         objectNumber: null,
         uploaded: 0
     };
-
     swissProjection = '+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs';
     currentLoc = {
         X: null,
@@ -112,14 +117,17 @@ export class FirstInsertMapPage implements OnInit {
         this.searching = true;
         this.gl.getCurrentPosition({'enableHighAccuracy': true})
             .then(position => {
-                let swissCoords = proj4('EPSG:4326', this.swissProjection, [position.coords.longitude, position.coords.latitude]);
-                this.map.getView().setCenter(ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]));
-                this.currentLoc.X = Math.round(swissCoords[0]);
-                this.currentLoc.Y = Math.round(swissCoords[1]);
-                this.currentLoc.pr = Math.round(position.coords.accuracy);
-                this.currentLoc.alti = Math.round(position.coords.altitude);
-                this.currentLoc.pralti = Math.round(position.coords.altitudeAccuracy);
-                this.observation.precisionCode = this.whatPrecision(Math.round(position.coords.accuracy));
+                const {longitude, latitude, accuracy, altitude, altitudeAccuracy} = position.coords;
+                let swissCoords = proj4('EPSG:4326', this.swissProjection, [longitude, latitude]);
+                this.map.getView().setCenter(ol.proj.fromLonLat([longitude, latitude]));
+                this.currentLoc = {
+                    X: Math.round(swissCoords[0]),
+                    Y: Math.round(swissCoords[1]),
+                    pr: Math.round(accuracy),
+                    alti: Math.round(altitude),
+                    pralti: Math.round(altitudeAccuracy)
+                };
+                this.observation.precisionCode = this.whatPrecision(Math.round(accuracy));
                 this.searching = false;
                 this.s.set('lastcoords', [this.currentLoc.X, this.currentLoc.Y]);
             });
@@ -147,14 +155,16 @@ export class FirstInsertMapPage implements OnInit {
         this.searching = true;
 
         this.s.get('lastcoords')
-            .then((r) => {
-                this.currentLoc.X = r[0];
-                this.currentLoc.Y = r[1];
-                this.currentLoc.pr = null;
-                this.currentLoc.alti = null;
-                this.currentLoc.pralti = null;
-                this.observation.precisionCode = null;
+            .then((coords) => {
+                this.currentLoc = {
+                    X: coords[0],
+                    Y: coords[1],
+                    pr: null,
+                    alti: null,
+                    pralti: null
+                };
 
+                this.observation.precisionCode = null;
                 let wgsCoords = proj4(this.swissProjection, 'EPSG:3857', [this.currentLoc.X, this.currentLoc.Y]);
 
                 this.map = new ol.Map({
@@ -166,39 +176,26 @@ export class FirstInsertMapPage implements OnInit {
                     })
                 });
 
-                this.gl.getCurrentPosition({'enableHighAccuracy': true})
-                    .then(position => {
-                        let swissCoords = proj4('EPSG:4326', this.swissProjection, [position.coords.longitude, position.coords.latitude]);
-                        this.map.getView().setCenter(ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]));
-                        this.currentLoc.X = Math.round(swissCoords[0]);
-                        this.currentLoc.Y = Math.round(swissCoords[1]);
-                        this.currentLoc.pr = Math.round(position.coords.accuracy);
-                        this.currentLoc.alti = Math.round(position.coords.altitude);
-                        this.currentLoc.pralti = Math.round(position.coords.altitudeAccuracy);
-                        this.observation.precisionCode = this.whatPrecision(Math.round(position.coords.accuracy));
-                        this.searching = false;
-                        this.s.set('lastcoords', [this.currentLoc.X, this.currentLoc.Y]);
-                    });
+                this.goToCurrentLocation();
 
                 let that = this;
-
                 this.map.on('moveend', function () {
-                    console.log(proj4('EPSG:3857', that.swissProjection, that.map.getView().getCenter()));
                     let wgsCoords = proj4('EPSG:3857', that.swissProjection, that.map.getView().getCenter());
                     that.observation.swissCoordinatesX = Math.round(wgsCoords[0]);
                     that.observation.swissCoordinatesY = Math.round(wgsCoords[1]);
-                    that.currentLoc.X = Math.round(wgsCoords[0]);
-                    that.currentLoc.Y = Math.round(wgsCoords[1]);
-                    that.currentLoc.pr = null;
-                    that.currentLoc.alti = null;
-                    that.currentLoc.pralti = null;
+                    that.currentLoc = {
+                        X: Math.round(wgsCoords[0]),
+                        Y: Math.round(wgsCoords[1]),
+                        pr: null,
+                        alti: null,
+                        pralti: null
+                    };
                     that.observation.precisionCode = null;
                 });
             });
     }
 
     ngOnInit() {
-
         if (this.n.type === 'none') {
             let alert = this.ac.create({
                 title: this.ts.instant('NO_NETWORK'),

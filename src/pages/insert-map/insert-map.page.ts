@@ -1,3 +1,8 @@
+/** Page affichant la carte OpenStreetMap (elle apparaît lorsque l'utilisateur choisit de commencer la saisie par les cartes (cf. paramètres).
+ *  Le déplacement de la carte met à jour les coordonnées (qui deviennent "manuelles", l'utilisateur devant renseigner la précision).
+ *  La localisation se fait via le plugin natif ionic Geolocation  https://ionicframework.com/docs/native/geolocation
+ *  Pour des raisons énergétiques, le choix s'est porté sur getCurrentPosition() plutôt que sur watchPosition() */
+
 import {NavController, NavParams} from 'ionic-angular';
 import {Geolocation} from '@ionic-native/geolocation';
 import proj4 from 'proj4';
@@ -66,14 +71,17 @@ export class InsertMapPage implements OnInit {
         this.searching = true;
         this.gl.getCurrentPosition({'enableHighAccuracy': true})
             .then(position => {
-                let swissCoords = proj4('EPSG:4326', this.swissProjection, [position.coords.longitude, position.coords.latitude]);
-                this.map.getView().setCenter(ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]));
-                this.currentLoc.X = Math.round(swissCoords[0]);
-                this.currentLoc.Y = Math.round(swissCoords[1]);
-                this.currentLoc.pr = Math.round(position.coords.accuracy);
-                this.currentLoc.alti = Math.round(position.coords.altitude);
-                this.currentLoc.pralti = Math.round(position.coords.altitudeAccuracy);
-                this.observation.precisionCode = this.whatPrecision(Math.round(position.coords.accuracy));
+                const {longitude, latitude, accuracy, altitude, altitudeAccuracy} = position.coords;
+                let swissCoords = proj4('EPSG:4326', this.swissProjection, [longitude, latitude]);
+                this.map.getView().setCenter(ol.proj.fromLonLat([longitude, latitude]));
+                this.currentLoc = {
+                    X: Math.round(swissCoords[0]),
+                    Y: Math.round(swissCoords[1]),
+                    pr: Math.round(accuracy),
+                    alti: Math.round(altitude),
+                    pralti: Math.round(altitudeAccuracy)
+                };
+                this.observation.precisionCode = this.whatPrecision(Math.round(accuracy));
                 this.searching = false;
             });
     }
@@ -101,7 +109,7 @@ export class InsertMapPage implements OnInit {
         this.currentLoc.Y = this.observation.swissCoordinatesY;
 
         this.map = new ol.Map({
-            layers: [new ol.layer.Tile({ source: new ol.source.OSM() })],
+            layers: [new ol.layer.Tile({source: new ol.source.OSM()})],
             target: document.getElementById('olmap'),
             view: new ol.View({
                 center: wgsCoords,
@@ -111,34 +119,35 @@ export class InsertMapPage implements OnInit {
 
         this.gl.getCurrentPosition({'enableHighAccuracy': true})
             .then(position => {
-                let swissCoords = proj4('EPSG:4326', this.swissProjection, [position.coords.longitude, position.coords.latitude]);
-                this.map.getView().setCenter(ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]));
-                this.currentLoc.X = Math.round(swissCoords[0]);
-                this.currentLoc.Y = Math.round(swissCoords[1]);
-                this.currentLoc.pr = Math.round(position.coords.accuracy);
-                this.currentLoc.alti = Math.round(position.coords.altitude);
-                this.currentLoc.pralti = Math.round(position.coords.altitudeAccuracy);
-                this.observation.precisionCode = this.whatPrecision(Math.round(position.coords.accuracy));
+                const {longitude, latitude, accuracy, altitude, altitudeAccuracy} = position.coords;
+                let swissCoords = proj4('EPSG:4326', this.swissProjection, [longitude, latitude]);
+                this.map.getView().setCenter(ol.proj.fromLonLat([longitude, latitude]));
+                this.currentLoc = {
+                    X: Math.round(swissCoords[0]),
+                    Y: Math.round(swissCoords[1]),
+                    pr: Math.round(accuracy),
+                    alti: Math.round(altitude),
+                    pralti: Math.round(altitudeAccuracy)
+                };
+                this.observation.precisionCode = this.whatPrecision(Math.round(accuracy));
                 this.searching = false;
             });
 
         let that = this;
-
         this.map.on('moveend', function () {
-            console.log(proj4('EPSG:3857', that.swissProjection, that.map.getView().getCenter()));
             let wgsCoords = proj4('EPSG:3857', that.swissProjection, that.map.getView().getCenter());
             that.observation.swissCoordinatesX = Math.round(wgsCoords[0]);
             that.observation.swissCoordinatesY = Math.round(wgsCoords[1]);
-            that.currentLoc.X = Math.round(wgsCoords[0]);
-            that.currentLoc.Y = Math.round(wgsCoords[1]);
-            that.currentLoc.pr = null;
-            that.currentLoc.alti = null;
-            that.currentLoc.pralti = null;
+            that.currentLoc = {
+                X: Math.round(wgsCoords[0]),
+                Y: Math.round(wgsCoords[1]),
+                pr: null,
+                alti: null,
+                pralti: null
+            };
             that.observation.precisionCode = null;
         });
-
         this.searching = false;
-
     }
 
     ngOnInit() {
