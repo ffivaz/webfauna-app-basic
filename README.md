@@ -15,3 +15,6 @@ npm install
 ionic cordova run android --prod
 ```
 A noter que pour que tout fonctionne, vous devez installer un environnement android / iOS sur votre ordinateur. Vous trouverez d'innombrables ressources dans ce sens sur Internet.
+
+## API
+La description pour les accès à l'API sont disponibles à l'adresse https://webfauna-api.cscf.ch/swagger/index.html#/.
